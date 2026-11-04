@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-plum: #42136b;
+  --color-violet: #8216a6;
+  --color-violet-dark: #6b1189;
+  --color-lavender: #f2e9fa;
+  --color-lavender-deep: #e8dbf6;
+  --color-cream: #fffcfa;
+  --color-ink: #2a1d38;
+  --color-muted: #5d5169;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  /* Consistent soft, plum-tinted elevation */
+  --shadow-soft: 0 1px 2px rgb(66 19 107 / 0.04), 0 8px 24px -6px rgb(66 19 107 / 0.10);
+  --shadow-lifted: 0 2px 4px rgb(66 19 107 / 0.05), 0 24px 48px -12px rgb(66 19 107 / 0.18);
+  --shadow-cta: 0 10px 24px -8px rgb(130 22 166 / 0.55);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-violet);
+  outline-offset: 2px;
+}
+
+@layer components {
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.16em] text-violet;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-b from-[#9124b8] to-violet px-7 font-bold text-white shadow-cta transition-all duration-200 hover:-translate-y-0.5 hover:from-violet hover:to-violet-dark active:translate-y-0;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-2xl border border-violet/30 bg-white px-7 font-bold text-violet shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:border-violet/60 hover:bg-lavender/50 active:translate-y-0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

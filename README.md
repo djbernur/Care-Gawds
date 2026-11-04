@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Care Gawds
 
-## Getting Started
+The Care Gawds website: a caregiver marketplace connecting families with nannies, babysitters, and childcare providers, launching first in Southern California.
 
-First, run the development server:
+Built with Next.js (App Router), TypeScript, and Tailwind CSS.
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # optional
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`npm run build` creates a production build, and `npm run lint` runs ESLint.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route | Page |
+|---|---|
+| `/` | Home |
+| `/find-a-caregiver` | Search and filters. Shows a launch message until real listings exist. |
+| `/caregivers/[slug]` | Caregiver profile. Only labeled example profiles exist today, and they are `noindex`. |
+| `/become-a-caregiver` | Caregiver recruitment and application form |
+| `/how-it-works` | Four-step overview and app preview |
+| `/about` | Brand story, mission, and vision |
+| `/help` | FAQ |
+| `/login`, `/signup`, `/privacy`, `/terms`, `/safety`, `/contact`, `/caregiver-guidelines` | Placeholders until those features or documents are ready |
 
-## Learn More
+## Forms
 
-To learn more about Next.js, take a look at the following resources:
+- `POST /api/waitlist` handles the family launch list.
+- `POST /api/caregiver-application` handles caregiver applications.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Both validate on the server and use a honeypot field, a minimum-time check, and (for applications) a basic rate limit. Submissions are forwarded as JSON to `WAITLIST_WEBHOOK_URL` / `CAREGIVER_APPLICATION_WEBHOOK_URL`. In production without those variables, the forms return a friendly "opening soon" message instead of discarding data.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Content rules
 
-## Deploy on Vercel
+- No ratings, reviews, or verification and background-check claims until those processes exist.
+- Caregiver qualifications are labeled **Self-reported** unless verified.
+- Real listings go in `liveCaregivers` in `src/data/caregivers.ts`. Example profiles appear in the directory only when `NEXT_PUBLIC_SHOW_DEMO_PROFILES=true`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Brand
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Colors are defined in `src/app/globals.css`: Deep Purple `#42136B`, Royal Violet `#8216A6`, Soft Lavender `#F2E9FA`, Warm White `#FFFCFA`. The font is Plus Jakarta Sans. The logo in `src/components/Logo.tsx` is a development approximation pending the official brand file.
+
+## Deployment
+
+Deploy on Vercel by importing this repository. It needs no build settings beyond the defaults. Add the environment variables above in the Vercel project settings.
